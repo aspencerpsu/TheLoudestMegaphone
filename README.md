@@ -1,2 +1,6 @@
 # TheLoudestMegaphone
-A Temporary Location For handle to be created
+A temporaray location for the twitter bot to post information to a devlopment site.
+
+Free for group members to download and merge to there workstation.
+
+If you have major changes to the site-code or the station, please slack me or email me at aspencerpsu@gmail.com BEFORE you submit the merge onto the branch
