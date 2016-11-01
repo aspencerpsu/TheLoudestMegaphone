@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+	<!-- <meta charset="UTF-8"> -->
+	<title>Homicides From (One Date)-(Other Date)</title>
+</head>
+
+{% autoescape off %}
+<body>
+	<div class="container">
+		<h2>Visualization of Gun Homicides</h2>
+		<div id="chart">
+		</div>
+	</div>
+	
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+	var myStyles = [];
+	var x_plot, max_count;
+	var killed = {{killed}};
+	var states = {{states}};
+	var tragedies = {{tragedies}};
+	var morgue = {{state_by_state}};
+
+	
+
+  
+	for(i = tragedies.length - 1; i >= 0; i--){
+		myStyles 
+			.push({'state': {{states}}[i],
+				 'background': '#800000',
+				 'width': 20,
+				 'height': {{killed}}[i] * 100,
+				 'color': '#fff',
+				})
+	};
+	
+	while(tragedies.length > 1) {
+
+		max_count = tragedies.reduce(function(a,b,c,d) { return d[d.length - 1][3] >  d[0][3] ? d.shift() : d.pop()}, tragedies[0])};
+	
+	var yScale = d3.scale.linear()
+		.domain([0, parseInt(tragedies[0][3]) * 100])
+		.range([0, 800]);
+				
+	d3.select("#chart")
+		.append("svg")
+			.attr('width', 600)
+			.attr('height', 800)
+			.style('background', '#C9D7D6')
+			.selectAll('rect')
+			.data(myStyles)
+			.enter().append('rect')
+			.attr('x', function(d, i) {
+				return i !== 0 ? i * (d.width + 15) :(d.width+15); })
+			.attr('y', function(d) {
+				return 800 - yScale(d.height);})
+			.attr('fill', function(d) {
+				return d.background;})
+			.attr('width', function(d) {
+				return d.width;})
+			.attr('height', function(d) {
+				return yScale(d.height);});
+	
+	d3.select("svg").selectAll("text")
+		.data(myStyles)
+		.enter()
+		.append("text")
+		.attr("x", x_plot = function(d, i) {
+			var collectx;
+			collectx = i !== 0 ? i * (parseInt(d.width) + 10) : (parseInt(d.width) + 10);
+			return collectx;})
+		.attr("y", function(d) {
+			return 600;})
+		.text(function(d) {return d.state;});
+	
+
+</script>
+</body>
+{% endautoescape %}
+</html>	
