@@ -17,7 +17,10 @@
 	
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+{% block rectangles %}
 <script>
+
 	var myStyles = [];
 	var x_plot, max_count;
 	var killed = {{killed}};
@@ -25,49 +28,86 @@
 	var tragedies = {{tragedies}};
 	var state_by_state = {{state_by_state}};
 	var cum_states = {{cum_states}};
-
-	
+	var total_by_state = {{total_by_state}};
+	var dates = {{dates}};
 
   
 	for(i = state_by_state.length - 1; i >= 0; i--){
 		myStyles 
 			.push({'state': {{state_by_state}}[i][4],
-				 'background': '#800000',
 				 'width': 20,
-				 'height': {{state_by_state}}[i][3] * 100,
+				 'height': parseInt({{state_by_state}}[i][3] * 100),
 				 'color': '#fff',
-		                 'stretch': i !== 0 ? i * (20 + 30) : (20 + 30),
+		                 'stretch': i !== 0 ? i * (20 + 30) : 0,
 				
 				})
 	};
 	
+	myStyles.sort(function (a,b) { if (a.height > b.height) { return 1;} else if (a.height < b.height) { return -1;} else {return 0;}});	
+
 	while(state_by_state.length > 1) {
 
 		max_count = state_by_state.reduce(function(a,b,c,d) { return d[d.length - 1][3] >  d[0][3] ? d.shift() : d.pop()}, state_by_state[0])};
 	
+/*     *****************MY TOOLS********************	                 */
+	var colors = d3.scale.linear()
+		.domain([0, parseInt(state_by_state[0][3] * 100)]) .range(['#D11C24', '#990000']) 
 	var yScale = d3.scale.linear()
 		.domain([0, parseInt(state_by_state[0][3]) * 100])
-		.range([0, 800]);
-				
+		.range([0, 800])
+		
+	var tooltip = d3.select('body').append('div')
+                .style('position', 'absolute')
+                .style('padding', '0 10px')
+                .style('background', 'white')
+                .style('opacity', 0)
+
+/* ************************************************************ */
+
+/* *************** GRAPHS *********************** */
+
 	d3.select("#chart")
 		.append("svg")
 			.attr('width', 2500)
 			.attr('height', 3000)
-			.style('background', '#C9D7D6')
+			.style('background-color', '#C9D7D6')
 			.selectAll('rect')
 			.data(myStyles)
 			.enter().append('rect')
-			.attr('x', function(d, i) {
-				return i !== 0 ? i * (d.width + 30) :(d.width+30); })
+			
 			.attr('y', function(d) {
 				return 3000 - yScale(d.height) - 200;})
-			.attr('fill', function(d) {
-				return d.background;})
+			.attr('x', function(d, i) {
+				return i !== 0 ? i * (d.width + 30) : 0; })
+			.attr('fill', function(d){
+				return colors(yScale(d.height));})
 			.attr('width', function(d) {
 				return d.width;})
 			.attr('height', function(d) {
-				return yScale(d.height);});
+				return yScale(d.height);})
+			
+			.on('mouseover', function(d) {
+				d3.select(this)
+                		.style('opacity', .5)
+				tooltip.transition().style('opacity', .9)
+
+        			tooltip.html((d.height/100).toString() + "  lives lost from " + dates[2] + " to " + dates[1])
+
+
+                		.style('left', (d3.event.pageX) + 'px')
+                		.style('top', (d3.event.pageY) + 'px')
+
+                		.style('fill', 'yellow')
+
+        		})
 	
+        		.on('mouseout', function(d) {
+        			d3.select(this)
+                		.style('opacity', 1)
+                		.style('fill', colors(yScale(d.height)))
+        		});
+
+/* ********************************************************************** */			
 	d3.select("svg").selectAll("text")
 		.data(myStyles)
 		.enter()
@@ -76,7 +116,6 @@
 	/*
 		.attr("style", function(d, i){
 			return `position: relative; top: 2900px; left: ${i !==0 ? i * (d.width + 30) : (d.width+30)}px; width: 100%; height: 100px; transform: rotate(45) translate(10);`;})
-
 	*/
 		.text(function(d) {return d.state;})
 	
@@ -90,7 +129,10 @@
 		
 		.attr("style", function(d) {
 			return "transform=rotate(45 " + String(d.stretch) + " " + String(3000-170) + ");"; });
+
 </script>
+{% endblock rectangles %}
+
 </body>
 {% endautoescape %}
 </html>	
