@@ -77,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+	    'debug': False,
         },
     },
 ]
@@ -133,9 +134,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATIC_DIRS = [ os.path.join(BASE_DIR, "static"), ]
+STATIC_DIRS = [ os.path.abspath(BASE_DIR)+"NewYorkFatalities/static/", ]
+
 
 MEDIA_URL="/media/"
 
