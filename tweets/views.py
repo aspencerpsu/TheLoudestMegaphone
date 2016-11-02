@@ -63,7 +63,7 @@ def tweets_index(request):
 						
 					
 	
-	mod_state_by_state = [state_by_state[x].items()) for x in range(0, len(state_by_state))]
+	mod_state_by_state = [convert(state_by_state[x].items()) for x in range(0, len(state_by_state))]
 
 	
 	sbs_killed=[int(mod_state_by_state[x][3][1]) for x in range(0, len(mod_state_by_state))]
