@@ -23,41 +23,44 @@
 	var killed = {{killed}};
 	var states = {{states}};
 	var tragedies = {{tragedies}};
-	var morgue = {{state_by_state}};
+	var state_by_state = {{state_by_state}};
+	var cum_states = {{cum_states}};
 
 	
 
   
-	for(i = tragedies.length - 1; i >= 0; i--){
+	for(i = state_by_state.length - 1; i >= 0; i--){
 		myStyles 
-			.push({'state': {{states}}[i],
+			.push({'state': {{state_by_state}}[i][4],
 				 'background': '#800000',
 				 'width': 20,
-				 'height': {{killed}}[i] * 100,
+				 'height': {{state_by_state}}[i][3] * 100,
 				 'color': '#fff',
+		                 'stretch': i !== 0 ? i * (20 + 30) : (20 + 30),
+				
 				})
 	};
 	
-	while(tragedies.length > 1) {
+	while(state_by_state.length > 1) {
 
-		max_count = tragedies.reduce(function(a,b,c,d) { return d[d.length - 1][3] >  d[0][3] ? d.shift() : d.pop()}, tragedies[0])};
+		max_count = state_by_state.reduce(function(a,b,c,d) { return d[d.length - 1][3] >  d[0][3] ? d.shift() : d.pop()}, state_by_state[0])};
 	
 	var yScale = d3.scale.linear()
-		.domain([0, parseInt(tragedies[0][3]) * 100])
+		.domain([0, parseInt(state_by_state[0][3]) * 100])
 		.range([0, 800]);
 				
 	d3.select("#chart")
 		.append("svg")
-			.attr('width', 600)
-			.attr('height', 800)
+			.attr('width', 2500)
+			.attr('height', 3000)
 			.style('background', '#C9D7D6')
 			.selectAll('rect')
 			.data(myStyles)
 			.enter().append('rect')
 			.attr('x', function(d, i) {
-				return i !== 0 ? i * (d.width + 15) :(d.width+15); })
+				return i !== 0 ? i * (d.width + 30) :(d.width+30); })
 			.attr('y', function(d) {
-				return 800 - yScale(d.height);})
+				return 3000 - yScale(d.height) - 200;})
 			.attr('fill', function(d) {
 				return d.background;})
 			.attr('width', function(d) {
@@ -69,15 +72,24 @@
 		.data(myStyles)
 		.enter()
 		.append("text")
+
+	/*
+		.attr("style", function(d, i){
+			return `position: relative; top: 2900px; left: ${i !==0 ? i * (d.width + 30) : (d.width+30)}px; width: 100%; height: 100px; transform: rotate(45) translate(10);`;})
+
+	*/
+		.text(function(d) {return d.state;})
+	
+                
 		.attr("x", x_plot = function(d, i) {
 			var collectx;
-			collectx = i !== 0 ? i * (parseInt(d.width) + 10) : (parseInt(d.width) + 10);
+			collectx = d.stretch;
 			return collectx;})
 		.attr("y", function(d) {
-			return 600;})
-		.text(function(d) {return d.state;});
-	
-
+			return 3000 - 170;})
+		
+		.attr("style", function(d) {
+			return "transform=rotate(45 " + String(d.stretch) + " " + String(3000-170) + ");"; });
 </script>
 </body>
 {% endautoescape %}
