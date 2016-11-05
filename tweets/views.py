@@ -3,15 +3,17 @@ import sys, os, shutil, tweepy, collections
 from tweepy import API
 import json
 from io import StringIO
+from time import *
+
+#Convert the unix default time zone to EST because we are in New York
+
+
+# import the tweets model
+
+from models import *
 
 
 # Create your views here.
-
-auth = tweepy.OAuthHandler("Axt0mv2kupxboLs30wSlWy73s", "JCBmN0ykBiHr7XFSVFJI1JGrfwtXlWnGNFA56tXIdx1aXXxAET")
-
-auth.set_access_token("781216035936538625-tsdTVa15PPxts0bWcJaABAm43HewBCg", "	9kkCjBXXhROi1gXvxWxZgHlhn1iMPFg0DZI7Jj2ZApq76")
-
-api = tweepy.API(auth)
 
 def convert(data):
     if isinstance(data, basestring):
@@ -23,9 +25,17 @@ def convert(data):
     else:
 	return data
 
+
+auth = tweepy.OAuthHandler("40Q6VBaRf0TMBFZZo9jzuOKJZ", "lugG7Pq8vIjXOGRLqo6ssGCzPVin8vmlQsOzjHs6kYiRbCFfd3")
+
+auth.set_access_token("781216035936538625-vJIOI1oz643ExxLaEsl7AUdrojD8Soz", "3rd4h4oNmfTfTHQGqrtjdiZlMCgl69706yoo67DuVQvuu")
+
+api = tweepy.API(auth)
+
 def tweets_index(request):
 	if os.path.isfile('/home/akeem/NewYorkFatalities/Casualties/affected.json'):
-		shutil.move('/home/akeem/NewYorkFatalities/Casualties/affected.json', "/home/akeem/NewYorkFatalities/affected.json")
+		shutil.copyfile('/home/akeem/NewYorkFatalities/Casualties/affected.json', '/home/akeem/NewYorkFatalities/affected.json')
+		shutil.move('/home/akeem/NewYorkFatalities/Casualties/affected.json', "/home/akeem/NewYorkFatalities/tweets/affected.json")
 		json_file = open(r'affected.json').read()
 		converted_json_file = StringIO(unicode(json_file))
 		json_dictionary = json.load(converted_json_file)
@@ -35,21 +45,35 @@ def tweets_index(request):
                 converted_json_file = StringIO(unicode(json_file))
                 json_dictionary = json.load(converted_json_file)
 
-	mod_json_dictionary = [convert(json_dictionary[x].items()) for x in range(0, len(json_dictionary))]
-	dates = [mod_json_dictionary[x][0][1] for x in range(0, len(mod_json_dictionary))]
-
-		
-	killed=[int(mod_json_dictionary[x][3][1]) for x in range(0, len(mod_json_dictionary))]
-	
-	state = [mod_json_dictionary[x][4][1] for x in range(0,len(mod_json_dictionary))]
 	
 	state_by_state = []
 
 	states = {'name': []}
 
 	iterobject = iter(json_dictionary)
-				
+	
+	tzset()	
+
+	os.environ['TZ'] = 'US/Eastern'
+
+	tzset()
+
 	for row in json_dictionary:
+		
+		date_conversion = strptime(row['date'], "%B %d, %Y")
+
+		try:
+			Tweet.objects.get(uid=int(row['uid']))
+		except:
+			print tzname
+			if strftime("%B %d, %Y", date_conversion) == strftime("%B %d, %Y"):
+				Tweet.objects.create(uid=int(row['uid']), source=row['source'], date=strftime("%Y-%m-%d", strptime(
+				str(row['date']), "%B %d, %Y")))
+
+				api.update_status(row['losses'] + " death(s) occured full report at " + row['source'])
+	
+	
+
 		next_item = iterobject.next()
 		if not states['name'].__contains__(next_item['state']):
 			state_by_state.append(next_item)
@@ -60,25 +84,34 @@ def tweets_index(request):
 					index['losses'] = str(int(index['losses']) + int(next_item['losses']))
 				else:
 					pass 
+
+	dates = [str(json_dictionary[x]['date']) for x in range(0, len(json_dictionary)-1)]
+
+		
+	killed=[str(json_dictionary[x]['losses']) for x in range(0, len(json_dictionary)-1)]
+	
+	state = [str(json_dictionary[x]['state']) for x in range(0,len(json_dictionary)-1)]
+	
+				
 						
 					
 	
-	mod_state_by_state = [convert(state_by_state[x].items()) for x in range(0, len(state_by_state))]
+	mod_state_by_state = [dict(convert(state_by_state[x].items())) for x in range(0, len(state_by_state)-1)]
 
 	
-	sbs_killed=[int(mod_state_by_state[x][3][1]) for x in range(0, len(mod_state_by_state))]
+	sbs_killed=[mod_state_by_state[x]['losses'] for x in range(0, len(mod_state_by_state)-1)]
 	
-	sbs_states = [mod_state_by_state[x][4][1] for x in range(0,len(mod_state_by_state))]
+	sbs_states = [mod_state_by_state[x]['state'] for x in range(0,len(mod_state_by_state)-1)]
 	context = {
-			"tragedies": mod_json_dictionary,
+			"tragedies": json_dictionary,
 			"states": state,
 			"killed": killed,
 			"dates": list(set(dates)),
 			"state_by_state": mod_state_by_state,
 			"total_by_state": sbs_killed,
 			"cum_states": sbs_states
-		}
-	
+		}	
+
 	return render(request, "home.html", context)
 	
 	
