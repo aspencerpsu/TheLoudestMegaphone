@@ -18,7 +18,14 @@ class NewYorkSpider(scrapy.Spider):
 			list_of_columns = row.css("td")
 			cell_date = list_of_columns[0].css("::text").extract_first()
 			epoch_date = strptime(cell_date, "%B %d, %Y")
-					
+			
+			
+			#Unique Identifier of the casuality that was created
+			#will collect a snippet of the uid
+			
+			incident = list_of_columns[6].css("ul li a::attr('href')").extract_first()
+			
+		
 			if int(list_of_columns[5].css("::text").extract_first()) == 0 or \
 			mktime(epoch_date) <= four_days_ago:
 				pass
@@ -30,6 +37,7 @@ class NewYorkSpider(scrapy.Spider):
 					"source": list_of_columns[6].css("ul li.last a::attr('href')").extract_first(),
 					"date": list_of_columns[0].css("::text").extract_first(),
 					"state": list_of_columns[1].css("::text").extract_first(),
+					"uid": incident[10:len(incident)]
 				}
 
 			
