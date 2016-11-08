@@ -5,6 +5,21 @@
 <head>
 	<!-- <meta charset="UTF-8"> -->
 	<title>Homicides From (One Date)-(Other Date)</title>
+	<style>
+		body{
+			background-color: #FDF6E3;
+		}
+
+		#chart{
+			max-width: 2500px;
+			height: 100%;
+			background: url('https://pbs.twimg.com/profile_images/791277870966538240/zYmTiv6r_400x400.jpg');
+			background-attachment: fixed;
+			background-size: contain;
+			background-position: center;
+		}
+	</style>
+			
 </head>
 
 {% autoescape off %}
@@ -39,7 +54,7 @@
 		myStyles 
 			.push({'state': state_by_state[i].state,
 				 'width': 20,
-				 'height': parseInt(state_by_state[i].losses) * 100,
+				 'height': parseInt(state_by_state[i].losses) * 10,
 				 'color': '#fff',
 				})
 	};
@@ -49,8 +64,8 @@
 	
 /*     *****************MY TOOLS********************	                 */
 	var colors = d3.scale.linear()
-		.domain([0, myStyles[myStyles.length - 1].height * 100])
-		.range(['#ffcccc', ''])
+		.domain([0, myStyles[myStyles.length - 1].height * 10])
+		.range(['#ffcccc', '#720404'])
 	
 	var yScale = d3.scale.linear()
 		.domain([0, myStyles[myStyles.length-1].height]) 
@@ -68,15 +83,16 @@
 
 	d3.select("#chart")
 		.append("svg")
-			.attr('width', 2500)
-			.attr('height', 3000)
+			.attr('width', screen.width+315)
+			.attr('height', 785)
 			.style('background-color', '#C9D7D6')
+			.style('margin', "0 auto")
 			.selectAll('rect')
 			.data(myStyles)
 			.enter().append('rect')
 			
 			.attr('y', function(d) {
-				return 3000 - yScale(d.height) - 200;})
+				return 780 - yScale(d.height) - 200;})
 			.attr('x', function(d, i) {
 				return i !== 0 ? i * (d.width + 30) : 0; })
 			.attr('fill', function(d){
@@ -91,7 +107,7 @@
                 		.style('opacity', .5)
 				tooltip.transition().style('opacity', .9)
 
-        			tooltip.html((d.height / 100).toString() + "  lives lost from " + dates[2] + " to " + dates[1])
+        			tooltip.html((d.height / 10).toString() + "  lives lost from " + dates[2] + " to " + dates[1])
 
 
                 		.style('left', (d3.event.pageX) + 'px')
@@ -125,7 +141,7 @@
 		.style("left", function(d, i) {
 			return (i !== 0 ? i * (d.width + 30) : 0).toString() + "px"; })
 		.style("top", function(d) {
-			return (3000 - 55).toString() + "px";})
+			return (785 - 55).toString() + "px";})
 		.style("width", "180px")
 		.style("height", "20px")
 		.style("font-size", "20px")
