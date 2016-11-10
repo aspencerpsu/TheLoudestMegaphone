@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 import sys, os, shutil, tweepy, collections
 from tweepy import API
 import json
 from io import StringIO
 from time import *
+from django.core import mail
 
 #Convert the unix default time zone to EST because we are in New York
 
@@ -38,10 +39,18 @@ def tweets_index(request):
 		shutil.move('/home/akeem/NewYorkFatalities/Casualties/affected.json', "/home/akeem/NewYorkFatalities/tweets/affected.json")
 		json_file = open(r'affected.json').read()
 		converted_json_file = StringIO(unicode(json_file))
-		json_dictionary = json.load(converted_json_file)
-	
+		try:
+			json_dictionary = json.load(converted_json_file)
+		except ValueError:
+			#re-collect statistics
+			print "errors are occuring"	
+			return HttpResponse("<h1>Server Crashed Sorry About That</h1>")
 	else:
-		json_file = open(r'affected.json').read()
+		try:
+			json_file = open(r'affected.json').read()
+		except ValueError:
+			print "errors are occuring"
+			return HttpResponse("<h1>Server Crashed Sorry About That</h1>")
                 converted_json_file = StringIO(unicode(json_file))
                 json_dictionary = json.load(converted_json_file)
 
