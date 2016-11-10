@@ -152,3 +152,9 @@ STATIC_DIRS = [ os.path.abspath(BASE_DIR)+"NewYorkFatalities/static/", ]
 MEDIA_URL="/media/"
 
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
+
+#EMAIL SETTINGS
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+
