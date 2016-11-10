@@ -31,14 +31,10 @@
 	</div>
 	
 
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script
-  src="https://code.jquery.com/jquery-2.2.4.min.js"
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-  crossorigin="anonymous"></script>
+<script src="http://d3js.org/d3.v4.min.js"></script>
 {% block rectangles %}
 <script>
-
+	var retrieveDate = d3.timeParse("%B %d, %Y");
 	var myStyles = [];
 	var x_plot, max_count;
 	var killed = {{killed}};
@@ -46,7 +42,10 @@
 	var state_by_state = {{state_by_state}};
 	var cum_states = {{cum_states}};
 	var total_by_state = {{total_by_state}};
-	var dates = {{dates}};
+	var dates = {{dates}}
+		.map(function(d) {return retrieveDate(d)})
+			.sort(function compare(a,b) {return b-a});
+	
 	var all_states = {{state_by_state}};
 
   
@@ -63,11 +62,11 @@
 
 	
 /*     *****************MY TOOLS********************	                 */
-	var colors = d3.scale.linear()
+	var colors = d3.scaleLinear()
 		.domain([0, myStyles[myStyles.length - 1].height * 10])
 		.range(['#ffcccc', '#720404'])
 	
-	var yScale = d3.scale.linear()
+	var yScale = d3.scaleLinear()
 		.domain([0, myStyles[myStyles.length-1].height]) 
 		.range([0, myStyles[myStyles.length-1].height])
 		
@@ -76,6 +75,9 @@
                 .style('padding', '0 10px')
                 .style('background', 'white')
                 .style('opacity', 0)
+		
+		.style("max-width", "200px")
+		.style("line-height", "170%");
 
 /* ************************************************************ */
 
@@ -105,9 +107,11 @@
 			.on('mouseover', function(d) {
 				d3.select(this)
                 		.style('opacity', .5)
-				tooltip.transition().style('opacity', .9)
+				tooltip.transition(10).style('opacity', .9)
 
-        			tooltip.html((d.height / 10).toString() + "  lives lost from " + dates[2] + " to " + dates[1])
+        			tooltip.html((d.height / 10).toString() + "  lives lost from " + dates[dates.length-1].toDateString() + " to " + dates[0].toDateString())
+				.style("max-width", "220px")
+				.style("line-height", "160%")
 
 
                 		.style('left', (d3.event.pageX) + 'px')
@@ -130,11 +134,6 @@
 		.data(myStyles)
 		.enter()
 		.append("div")
-
-	/*
-		.attr("style", function(d, i){
-			return `position: relative; top: 2900px; left: ${i !==0 ? i * (d.width + 30) : (d.width+30)}px; width: 100%; height: 100px; transform: rotate(45) translate(10);`;})
-	*/
 		.text(function(d,i) {console.log(d.state); console.log(i); return d.state;})
 	
                 .style("position", "absolute")
@@ -142,11 +141,11 @@
 			return (i !== 0 ? i * (d.width + 30) : 0).toString() + "px"; })
 		.style("top", function(d) {
 			return (785 - 55).toString() + "px";})
-		.style("width", "180px")
 		.style("height", "20px")
 		.style("font-size", "20px")
 		.style("-webkit-transform", function(d) {
-			return "rotate(45deg)"; });
+			return "rotate(45deg)"; })
+		.style("width", "180px");
 
 </script>
 {% endblock rectangles %}
