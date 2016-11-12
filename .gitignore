@@ -2,4 +2,7 @@
 *.pyo
 *.h
 .sass-cache
+venv/
+.idea/
+passwords.json
 
