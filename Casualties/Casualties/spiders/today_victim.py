@@ -37,7 +37,7 @@ class NewYorkSpider(scrapy.Spider):
 					"source": list_of_columns[6].css("ul li.last a::attr('href')").extract_first(),
 					"date": list_of_columns[0].css("::text").extract_first(),
 					"state": list_of_columns[1].css("::text").extract_first(),
-					"uid": incident[10:len(incident)]
+					"uid": incident[10:len(incident)] #determines the id associated with casualty
 				}
 
 			
