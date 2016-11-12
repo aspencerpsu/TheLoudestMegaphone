@@ -79,7 +79,7 @@ def tweets_index(request):
 				Tweet.objects.create(uid=int(row['uid']), source=row['source'], date=strftime("%Y-%m-%d", strptime(
 				str(row['date']), "%B %d, %Y")))
 
-				api.update_status(row['losses'] + " death(s) occured full report at " + row['source'])
+				api.update_status("A loss of " + row['losses'] + " occurred today, full report at " + row['source'])
 	
 	
 
