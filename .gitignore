@@ -1,2 +1,6 @@
 *.pyc
-ny/
+*.pyo
+settings.py
+.sass-cache
+*.h
+__init__.py
