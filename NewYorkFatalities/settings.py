@@ -10,7 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
-import os, psycopg2, sys, gettext, locale
+import os, psycopg2, sys, gettext, locale, json
+
+#read json file containing secret credentials
+print(os.getcwd())
+passwords_data = json.load(open('passwords.json'))
 
 sys.dont_write_bytecode
 
@@ -31,12 +35,12 @@ ALLOWED_HOSTS = []
 
 #Tweepy Account Settings
 
-Twitter_Consumer_Key = 	'Axt0mv2kupxboLs30wSlWy73s'
-Twitter_Consumer_Secret = '	JCBmN0ykBiHr7XFSVFJI1JGrfwtXlWnGNFA56tXIdx1aXXxAET'
-Twitter_Access_Token = '781216035936538625-tsdTVa15PPxts0bWcJaABAm43HewBCg'
-Twitter_Access_Secret = '9kkCjBXXhROi1gXvxWxZgHlhn1iMPFg0DZI7Jj2ZApq76'
-Owner_ID = 781216035936538625
-Owner = 'theloudestmega1'
+Twitter_Consumer_Key = 	passwords_data['Twitter_Consumer_Key']
+Twitter_Consumer_Secret = passwords_data['Twitter_Consumer_Secret']
+Twitter_Access_Token = passwords_data['Twitter_Access_Token']
+Twitter_Access_Secret = passwords_data['Twitter_Access_Secret']
+Owner_ID = int(passwords_data['Owner_ID'])
+Owner = passwords_data['Owner']
 
 
 
@@ -53,8 +57,8 @@ INSTALLED_APPS = [
     #All Third Party Applications
      'tweepy',
      'NewYorkFatalities',
-     'tweets',
-     'gun_violence_archive'
+     'tweets'
+     #'gun_violence_archive'
 
 ]
 
@@ -96,10 +100,10 @@ WSGI_APPLICATION = 'NewYorkFatalities.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'loudestmegaphone',
-	'USER': os.getenv('DB_USER'),
-	'PASSWORD': os.getenv('DB_PASS'),
-	'HOST': 'localhost',
+        'NAME': passwords_data['DB_NAME'],
+	'USER': passwords_data['DB_USER'],
+	'PASSWORD': passwords_data['DB_PASS'],
+	'HOST': passwords_data['DB_HOST'],
 	'POST': '',
 	'BROKER_URL': 'django://'
     }

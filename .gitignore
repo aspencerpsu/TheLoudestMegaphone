@@ -1,2 +1,6 @@
 *.pyc
 ny/
+venv/
+.idea/
+passwords.json
+
