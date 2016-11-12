@@ -97,8 +97,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'loudestmegaphone',
-	'USER': 'loudestone',
-	'PASSWORD': 'changetheworld',
+	'USER': os.getenv('DB_USER'),
+	'PASSWORD': os.getenv('DB_PASS'),
 	'HOST': 'localhost',
 	'POST': '',
 	'BROKER_URL': 'django://'
