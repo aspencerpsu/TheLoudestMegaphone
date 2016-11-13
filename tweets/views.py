@@ -6,6 +6,9 @@ from io import StringIO
 from time import *
 from django.core import mail
 
+from django.http import HttpResponse
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 #Convert the unix default time zone to EST because we are in New York
 
 
@@ -33,6 +36,7 @@ auth.set_access_token("781216035936538625-vJIOI1oz643ExxLaEsl7AUdrojD8Soz", "3rd
 
 api = tweepy.API(auth)
 
+@xframe_options_exempt
 def tweets_index(request):
 	if os.path.isfile('/home/akeem/NewYorkFatalities/Casualties/affected.json'):
 		shutil.copyfile('/home/akeem/NewYorkFatalities/Casualties/affected.json', '/home/akeem/NewYorkFatalities/affected.json')
