@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gun Violence Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1>Gun Violence Archive</h1>
+    </div>
+
+    <div class="container" id="gun_archive_table_container" >
+        <div class="row" >
+            <a href="">
+                Add <span class =" glyphicon glyphicon-plus"></span>
+            </a>
+            <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Police Involved</th>
+                            <th>Killed</th>
+                            <th>Injured</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+{#                    <tbody>#}
+{#                    {% for row in rows %}#}
+{#                        <tr data-id="{{row[0]}}">#}
+{#                            <td>{{row[1]}}</td>#}
+{#                            <td>{{row[2]}}</td>#}
+{#                            <td>{{row[3]}}</td>#}
+{#                            <td>{{row[4]}}</td>#}
+{#                            {% if row[5] %}#}
+{#                                <td>YES</td>#}
+{#                            {% else %}#}
+{#                                <td>NO</td>#}
+{#                            {% endif %}#}
+{#                            <td>{{row[6]}}</td>#}
+{#                            <td>{{row[7]}}</td>#}
+{#                            {% if row[8] == None%}#}
+{#                                <td></td>#}
+{#                            {% else %}#}
+{#                                <td>{{row[8]}}</td>#}
+{#                            {% endif %}#}
+{#                        </tr>#}
+{#                    {% endfor %}#}
+{#                    </tbody>#}
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

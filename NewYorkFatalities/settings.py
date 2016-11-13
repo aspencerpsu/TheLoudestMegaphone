@@ -58,8 +58,8 @@ INSTALLED_APPS = [
     #All Third Party Applications
      'tweepy',
      'NewYorkFatalities',
-     'tweets'
-     #'gun_violence_archive'
+     'tweets',
+     'GunViolenceArchive',
 
 ]
 
