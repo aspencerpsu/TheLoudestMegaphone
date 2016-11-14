@@ -22,7 +22,7 @@ import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	url(r'^$', include("tweets.urls", namespace="tweets")),
-	url(r'^gvarchive/$', include("GunViolenceArchive.urls")),
+	url(r'^gvarchive/', include("GunViolenceArchive.urls", namespace="GunViolenceArchive")),
 ]
 
 # append gun_violence urls

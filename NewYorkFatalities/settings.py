@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_LOUD_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost',]
 
 #Tweepy Account Settings
 
@@ -151,7 +151,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATIC_DIRS = [ os.path.abspath(BASE_DIR)+"NewYorkFatalities/static/", ]
+STATIC_DIRS = [ os.path.abspath(BASE_DIR)+"/static/", ]
 
 
 MEDIA_URL="/media/"
