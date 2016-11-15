@@ -28,7 +28,9 @@ $('#injured').change(function () {
 });
 
 $('#inlineRadio1').click(function () {
-    if($('#inlineRadio1').is(':checked')) { alert("it's checked"); }
+    if($('#inlineRadio1').is(':checked')) {
+        console.log('checked radio button to yes');
+    }
 });
 
 $("#gvform").submit(function (event) {
