@@ -1,11 +1,8 @@
 from django.shortcuts import render, HttpResponse
-import sys, os, shutil, tweepy, collections
+import sys, os, shutil, tweepy, collections, json, re
 from tweepy import API
-import json
-from io import StringIO
 from time import *
 from django.core import mail
-
 from django.http import HttpResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
 
@@ -38,25 +35,36 @@ api = tweepy.API(auth)
 
 @xframe_options_exempt
 def tweets_index(request):
+
+	json_file = open(r'affected.json')
+	empty_list = [] #This will be for inserting/dumping json objects into the array
 	if os.path.isfile('/home/akeem/NewYorkFatalities/Casualties/affected.json'):
 		shutil.copyfile('/home/akeem/NewYorkFatalities/Casualties/affected.json', '/home/akeem/NewYorkFatalities/affected.json')
 		shutil.move('/home/akeem/NewYorkFatalities/Casualties/affected.json', "/home/akeem/NewYorkFatalities/tweets/affected.json")
-		json_file = open(r'affected.json').read()
-		converted_json_file = StringIO(unicode(json_file))
 		try:
-			json_dictionary = json.load(converted_json_file)
-		except ValueError:
-			#re-collect statistics
-			print "errors are occuring"	
+			for line in json_file:
+				line = line.strip() #remove newline breaks
+				if re.search("\,\Z", line):
+					empty_list.append(json.loads(line[0:-1]))
+				else:
+					empty_list.append(json.loads(line))
+		except:	
 			return HttpResponse("<h1>Server Crashed Sorry About That</h1>")
 	else:
 		try:
-			json_file = open(r'affected.json').read()
-		except ValueError:
-			print "errors are occuring"
+			for line in json_file:
+				line = line.strip() #remove newline breaks
+				if re.search("\,\Z", line):
+					empty_list.append(json.loads(line[0:-1]))
+				else:
+					empty_list.append(json.loads(line))
+		except:
 			return HttpResponse("<h1>Server Crashed Sorry About That</h1>")
-                converted_json_file = StringIO(unicode(json_file))
-                json_dictionary = json.load(converted_json_file)
+	
+	json_dictionary = empty_list #list will  now represent json_dictionary
+
+	
+	###########################################################
 
 	
 	state_by_state = []
