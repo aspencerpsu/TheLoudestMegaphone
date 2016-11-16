@@ -3,6 +3,21 @@
  */
 
 
+// dynamic form fields with jquery
+
+$('#inlineRadio1').click(function () {
+    if($('#inlineRadio1').is(':checked')) {
+        console.log('checked radio button to yes');
+        $('#civilian_killed_label').text(function () {
+            return 'Civilians Killed';
+        });
+    }
+});
+
+
+
+// reset red border after correction.
+
 $('#datetimepicker1').change(function () {
     $('#datetimepicker1').css('border-color','#ccc');
 });
@@ -27,9 +42,8 @@ $('#injured').change(function () {
         $('#injured').css('border-color','#ccc');
 });
 
-$('#inlineRadio1').click(function () {
-    if($('#inlineRadio1').is(':checked')) { alert("it's checked"); }
-});
+
+// checks submission for errors.
 
 $("#gvform").submit(function (event) {
 

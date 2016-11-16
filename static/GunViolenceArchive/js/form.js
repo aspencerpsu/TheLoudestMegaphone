@@ -3,6 +3,35 @@
  */
 
 
+// dynamic form fields with jquery
+
+$('#inlineRadio1').click(function () {
+    if($('#inlineRadio1').is(':checked')) {
+        console.log('checked radio button to yes');
+        $('#civilian_killed_label').text(function () {
+            return 'Civilians Killed';
+        });
+        $('#civilian_injured_label').text(function () {
+            return 'Civilians Injured';
+        });
+    }
+});
+
+$('#inlineRadio2').click(function () {
+    if ($('#inlineRadio2').is(':checked')) {
+        $('#civilian_killed_label').text(function () {
+            return 'Killed';
+        });
+    }
+});
+
+
+/**
+ * form validation scripts
+ */
+
+// reset red border after correction.
+
 $('#datetimepicker1').change(function () {
     $('#datetimepicker1').css('border-color','#ccc');
 });
@@ -27,11 +56,8 @@ $('#injured').change(function () {
         $('#injured').css('border-color','#ccc');
 });
 
-$('#inlineRadio1').click(function () {
-    if($('#inlineRadio1').is(':checked')) {
-        console.log('checked radio button to yes');
-    }
-});
+
+// checks submission for errors.
 
 $("#gvform").submit(function (event) {
 

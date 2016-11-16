@@ -37,3 +37,7 @@ h1 {
 #non_numeric_warning_injured {
     display: none;
 }
+
+#police_casualty_row {
+    display: none;
+}
