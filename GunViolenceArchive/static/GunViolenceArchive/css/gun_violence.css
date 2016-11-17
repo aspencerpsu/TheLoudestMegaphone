@@ -1,0 +1,43 @@
+.input-group {
+    margin-bottom: 10px;
+}
+
+#city {
+    width: 100%;
+}
+button {
+    margin-top: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.btn {
+    margin-bottom: 10px;
+}
+.form-check-inline {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+#radio_title {
+    margin-top: 10px;
+}
+
+#required_fields_warning {
+    display: none;
+}
+
+#non_numeric_warning_killed {
+    display: none;
+}
+
+#non_numeric_warning_injured {
+    display: none;
+}
+
+#police_casualty_row {
+    display: none;
+}
