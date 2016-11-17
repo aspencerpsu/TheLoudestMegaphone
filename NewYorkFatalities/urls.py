@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
-#from gun_violence_archive.urls import urlpatterns as gun_violence_url
+
 import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	url(r'^$', include("tweets.urls", namespace="tweets")),
+	url(r'^gvarchive/', include("GunViolenceArchive.urls", namespace="GunViolenceArchive")),
 ]
 
 # append gun_violence urls
