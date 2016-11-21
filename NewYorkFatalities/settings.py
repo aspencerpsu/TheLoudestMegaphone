@@ -32,7 +32,7 @@ SECRET_KEY = passwords_data['Secret_Key']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost',]
+ALLOWED_HOSTS = ['localhost', '159.203.121.150']
 
 #Tweepy Account Settings
 
