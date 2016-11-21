@@ -35,26 +35,19 @@
 <script src="http://d3js.org/d3.v4.min.js"></script>
 {% block rectangles %}
 <script>
-	var retrieveDate = d3.timeParse("%B %d, %Y");
+	var retrieveDate = d3.timeParse("%Y-%m-%d");
 	var myStyles = [];
 	var x_plot, max_count;
-	var killed = {{killed}};
-	var states = {{states}};
 	var state_by_state = {{state_by_state}};
-	var cum_states = {{cum_states}};
-	var total_by_state = {{total_by_state}};
 	var dates = {{dates}}
 		.map(function(d) {return retrieveDate(d)})
 			.sort(function compare(a,b) {return b-a});
-	
-	var all_states = {{state_by_state}};
-
   
 	for(i=0; i <= state_by_state.length - 1; i++){
 		myStyles 
 			.push({'state': state_by_state[i].state,
 				 'width': 20,
-				 'height': parseInt(state_by_state[i].losses) * 10,
+				 'height': parseInt(state_by_state[i].killed__sum) * 10,
 				 'color': '#fff',
 				})
 	};
